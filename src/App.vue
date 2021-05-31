@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <TheNavigation />
-    <transition name="slide" mode="easeIn">
+    <transition name="fade" mode="out-in">
       <router-view :key="$route.path" />
     </transition>
   </div>
@@ -17,26 +17,22 @@ export default {
 </script>
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
 }
-/*Enter the transition for slide the page*/
 .slide-enter-active,
-.slide-leave-active{
-  transition: opacity 1s, tranform 1s;
+.slide-leave-active {
+  transition: opacity 1s, transform 1s;
 }
 .slide-enter,
-.slide-leave-to{
-opacity: 0;
+.slide-leave-to {
+  opacity: 0;
   transform: translateX(-30%);
 }
-
-/*Enter the transition for moveUp the page*/
-
-.moveUp-enter-active{
+.moveUp-enter-active {
   animation: fadeIn 1s ease-in;
 }
 @keyframes fadeIn {
@@ -57,19 +53,27 @@ opacity: 0;
   0% {
     transform: translateY(0);
   }
-  100%{
+  100% {
     transform: translateY(-400px);
   }
 }
-
-/*Enter the transition for fade the page*/
 .fade-enter-active,
-.fade-leave-active{
-  transition: opacity 0.7s;
+.fade-leave-active {
+  transition: opacity 0.3s;
 }
-fade-enter,
-fade-leave-to{
-  opacity: 20%;
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+.input {
+  border: 1px solid green;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.btn {
+  background-color: green;
+  color: white;
+  padding: 10px;
 }
 
 </style>

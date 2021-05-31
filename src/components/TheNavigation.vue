@@ -9,6 +9,9 @@
         <router-link :to="{name: 'DestinationDetails',params:{ slug: destination.slug }}"> {{ destination.name }}
         </router-link>
       </li>
+      <li class="links">
+        <router-link to="/user">Dashboard</router-link>
+      </li>
     </ul>
   </nav>
 </template>
@@ -28,6 +31,12 @@ export default {
 <style scoped>
 #nav {
   display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  border-bottom: 1px solid grey;
+  z-index: 1;
 }
 
 #nav a {

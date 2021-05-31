@@ -24,7 +24,7 @@ const routes = [
         path: ":experienceSlug",
         name: "experienceDetails",
         props: true,
-        component: () => import(/* webpackChunkName: "ExperienceDetails" */"../views/ExperienceDetails"),
+        component: () => import(/* webpackChunkName: "ExperienceDetails" */"../views/ExperienceDetails")
       }
     ],
     beforeEnter: (to, from, next) => {
@@ -39,16 +39,69 @@ const routes = [
     }
   },
   {
-    path: "*",
+    path: "/user",
+    name: "user",
+    component: () => import(/* webpackChunkName: "User" */"../views/User"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: () =>
+      import(/* webpackChunkName: "Login" */"../views/Login.vue"),
+  },
+  {
+    path: "/invoices",
+    name: "invoices",
+    component: () =>
+      import(/* webpackChunkName: "Invoices" */ "../views/Invoices"),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/404",
+    alias: "*",
     name: "notFound",
-    component:()=>import(/* webpackChunkName: "NotFound" */"../views/NotFound"),
+    component: () => import(/* webpackChunkName: "NotFound" */"../views/NotFound")
   }
 ];
 
 const router = new VueRouter({
   routes,
   linkExactActiveClass: "vue-school-active-class",
-  mode: "history"
+  mode: "history",
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      const position = {};
+      if (to.hash) {
+        position.selector = to.hash;
+        if (to.hash === "#experience") {
+          position.offset = { y: 140 };
+        }
+        if (document.querySelector(to.hash)) {
+          return position;
+        }
+        return false;
+      }
+    }
+  }
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.user){
+      next({
+        name: "login",
+        query: {redirect: to.fullPath}
+      });
+    }else{
+      next();
+    }
+  } else {
+    next();
+  }
+});
 export default router;
